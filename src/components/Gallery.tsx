@@ -13,7 +13,7 @@ const Gallery: React.FC<GalleryProps> = ({ onBack }) => {
     { src: '/static/images/optimized_erriscoastline-20.png', title: 'Erris Coastline View 20' },
     { src: '/static/images/optimized_erriscoastline-13.png', title: 'Erris Coastline View 13' },
     { src: '/static/images/optimized_erriscoastline-10.png', title: 'Erris Coastline View 10' },
-    { src: '/static/images/optimized_erriscoastline-8.png', title: 'Erris Coastline View 8' },
+    { src: '/static/images/optimized_erriscoastline-8.png', title: 'Erris Coastline View 8' }, 
     { src: '/static/images/optimized_erriscoastline-4.png', title: 'Erris Coastline View 4' },
     { src: '/static/images/optimized_broadhavenbaycoast-77.png', title: 'Broadhaven Bay Coast 77' },
     { src: '/static/images/optimized_broadhavenbaycoast-70.png', title: 'Broadhaven Bay Coast 70' },
