@@ -150,7 +150,7 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection }
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/static/videos/Promo.mp4" type="video/mp4" />
+          <source src="https://belcrossmarinetours.s3.eu-north-1.amazonaws.com/Promo.mp4" type="video/mp4" />
           {/* Fallback image in case video doesn't load */}
           <img 
             src="https://images.pexels.com/photos/1001682/pexels-photo-1001682.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
