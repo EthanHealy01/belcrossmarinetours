@@ -380,11 +380,8 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection }
               </div>
             </div>
             
-            <div className="bg-white rounded-2xl p-8 shadow-xl transform hover:scale-105 transition-all duration-300 ring-4 ring-teal-400">
+            <div className="bg-white rounded-2xl p-8 shadow-xl transform hover:scale-105 transition-all duration-300">
               <div className="text-center">
-                <div className="bg-teal-100 text-teal-800 text-sm font-semibold px-3 py-1 rounded-full inline-block mb-4">
-                  Best Value
-                </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Child</h3>
                 <div className="text-5xl font-bold text-blue-700 mb-2">€40</div>
                 <p className="text-gray-600 mb-2">Under 16</p>
