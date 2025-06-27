@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface GalleryProps {
@@ -7,6 +7,11 @@ interface GalleryProps {
 
 const Gallery: React.FC<GalleryProps> = ({ onBack }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+  // Scroll to top when component mounts to fix scroll position issue
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // Actual images from your public/static/images folder
   const galleryImages = [
@@ -186,12 +191,12 @@ const Gallery: React.FC<GalleryProps> = ({ onBack }) => {
           <p className="text-xl text-blue-100 mb-8">
             Join us on an unforgettable journey along Ireland's most spectacular coastline
           </p>
-          <button
-            onClick={onBack}
-            className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+          <a
+            href="https://fareharbor.com/embeds/book/belcrossmarinetours/?full-items=yes&flow=1427653"
+            className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg inline-block"
           >
             Book Your Adventure
-          </button>
+          </a>
         </div>
       </div>
     </div>

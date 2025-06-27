@@ -16,33 +16,73 @@ import {
   ChevronRight,
   Anchor
 } from 'lucide-react';
-import { tours, stagsImages, errisImages } from '../data/tours';
-import TourModal from './TourModal';
+import { stagsImages, errisImages } from '../data/tours';
+import TourInfoModal from './TourInfoModal';
 
 interface HomePageProps {
   activeSection: string;
   setActiveSection: (section: string) => void;
   scrollToSection: (sectionId: string) => void;
+  onModalStateChange?: (isOpen: boolean) => void;
 }
 
-interface Tour {
-  title: string;
-  subtitle: string;
-  duration: string;
-  location: string;
-  description: string;
-  highlights: string[];
-  images: string[];
-  fullDescription: string;
-}
 
-const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection }) => {
-  const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
+const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection, onModalStateChange }) => {
   // Tour carousel states
   const [stagsCarouselIndex, setStagsCarouselIndex] = useState(0);
   const [errisCarouselIndex, setErrisCarouselIndex] = useState(0);
+  
+  // Tour data for the modal
+  const tourData = {
+    stags: {
+      title: 'The Stags & Cliffs',
+      subtitle: 'Coastal Boat Tour',
+      duration: '2.5-3 hours',
+      location: 'Ballyglass Pier',
+      description: 'Set off on an unforgettable journey along one of Ireland\'s most spectacular coastlines.',
+      fullDescription: 'Cruise through Broadhaven Bay and witness the dramatic Stags of Broadhaven Bay - jagged sea stacks rising dramatically from the ocean like ancient sentinels. Leaving from the peaceful harbour of Ballyglass, we\'ll cruise through Broadhaven Bay and head north, where the wild Atlantic meets sheer cliffs, remote islands, and dramatic sea stacks.',
+      highlights: [
+        'Kid Island with stunning coastal backdrop',
+        'Hidden caves and blowholes accessible only by sea',
+        'Incredible cliffs of Inver and Portacloy',
+        'Wildlife spotting: dolphins, seals, and puffins'
+      ],
+      images: stagsImages,
+      bookingUrl: 'https://fareharbor.com/embeds/book/belcrossmarinetours/items/645292/?full-items=yes&flow=1427653'
+    },
+    erris: {
+      title: 'Erris Head',
+      subtitle: 'Coastal Boat Tour',
+      duration: '2.5-3 hours',
+      location: 'Ballyglass Pier',
+      description: 'Explore one of the most remote and awe-inspiring stretches of Ireland\'s Atlantic coastline.',
+      fullDescription: 'Journey to the iconic Erris Head where few boats venture, offering you a front-row seat to one of Mayo\'s most breathtaking natural landmarks. Get ready to explore one of the most remote and awe-inspiring stretches of Ireland\'s Atlantic coastline.',
+      highlights: [
+        'Spectacular Erris Head with towering sheer cliffs',
+        'Hidden coves and dramatic rock formations',
+        'Sea caves and blowholes shaped by centuries',
+        'Rich wildlife: puffins, guillemots, seals, dolphins'
+      ],
+      images: errisImages,
+      bookingUrl: 'https://fareharbor.com/embeds/book/belcrossmarinetours/items/645293/?full-items=yes&flow=1427653'
+    }
+  };
+
+  // Modal states
+  const [selectedTour, setSelectedTour] = useState<typeof tourData.stags | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openTourModal = (tourKey: 'stags' | 'erris') => {
+    setSelectedTour(tourData[tourKey]);
+    setIsModalOpen(true);
+    onModalStateChange?.(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    onModalStateChange?.(false);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,11 +101,6 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection }
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [setActiveSection]);
-
-  const openTourModal = (tourKey: string) => {
-    setSelectedTour(tours[tourKey as keyof typeof tours]);
-    setIsModalOpen(true);
-  };
 
   const nextImage = (tourType: 'stags' | 'erris') => {
     if (tourType === 'stags') {
@@ -234,37 +269,22 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection }
                   </div>
                 </div>
                 <p className="text-gray-700 mb-4 md:mb-6 leading-relaxed text-sm md:text-base">
-                  Set off on an unforgettable journey along one of Ireland's most spectacular coastlines. 
-                  Cruise through Broadhaven Bay and witness the dramatic Stags of Broadhaven Bay - 
-                  jagged sea stacks rising dramatically from the ocean like ancient sentinels.
+                  Set off on an unforgettable journey along one of Ireland's most spectacular coastlines...
                 </p>
-                <div className="space-y-3 mb-4 md:mb-6">
-                  <h4 className="font-semibold text-gray-900 text-sm md:text-base">Highlights Include:</h4>
-                  <ul className="space-y-2 text-gray-700 text-sm md:text-base">
-                    <li className="flex items-start space-x-2">
-                      <Eye className="h-4 w-4 mt-1 text-teal-600 flex-shrink-0" />
-                      <span>Kid Island with stunning coastal backdrop</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <Eye className="h-4 w-4 mt-1 text-teal-600 flex-shrink-0" />
-                      <span>Hidden caves and blowholes accessible only by sea</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <Eye className="h-4 w-4 mt-1 text-teal-600 flex-shrink-0" />
-                      <span>Incredible cliffs of Inver and Portacloy</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <Eye className="h-4 w-4 mt-1 text-teal-600 flex-shrink-0" />
-                      <span>Wildlife spotting: dolphins, seals, and puffins</span>
-                    </li>
-                  </ul>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => openTourModal('stags')}
+                    className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 md:px-6 py-3 rounded-lg font-semibold transition-colors duration-300 text-sm md:text-base"
+                  >
+                    More Info
+                  </button>
+                  <a
+                    href="https://fareharbor.com/embeds/book/belcrossmarinetours/items/645292/?full-items=yes&flow=1427653"
+                    className="flex-1 bg-teal-600 hover:bg-teal-700 text-white px-4 md:px-6 py-3 rounded-lg font-semibold transition-colors duration-300 text-sm md:text-base text-center"
+                  >
+                    Book Now
+                  </a>
                 </div>
-                <button
-                  onClick={() => openTourModal('stags')}
-                  className="w-full bg-teal-600 hover:bg-teal-700 text-white px-4 md:px-6 py-3 rounded-lg font-semibold transition-colors duration-300 text-sm md:text-base"
-                >
-                  Book This Tour
-                </button>
               </div>
             </div>
 
@@ -297,37 +317,22 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection }
                   </div>
                 </div>
                 <p className="text-gray-700 mb-4 md:mb-6 leading-relaxed text-sm md:text-base">
-                  Explore one of the most remote and awe-inspiring stretches of Ireland's Atlantic coastline. 
-                  Journey to the iconic Erris Head where few boats venture, offering you a front-row seat 
-                  to one of Mayo's most breathtaking natural landmarks.
+                  Explore one of the most remote and awe-inspiring stretches of Ireland's Atlantic coastline...
                 </p>
-                <div className="space-y-3 mb-4 md:mb-6">
-                  <h4 className="font-semibold text-gray-900 text-sm md:text-base">What You'll Experience:</h4>
-                  <ul className="space-y-2 text-gray-700 text-sm md:text-base">
-                    <li className="flex items-start space-x-2">
-                      <Eye className="h-4 w-4 mt-1 text-teal-600 flex-shrink-0" />
-                      <span>Spectacular Erris Head with towering sheer cliffs</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <Eye className="h-4 w-4 mt-1 text-teal-600 flex-shrink-0" />
-                      <span>Hidden coves and dramatic rock formations</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <Eye className="h-4 w-4 mt-1 text-teal-600 flex-shrink-0" />
-                      <span>Sea caves and blowholes shaped by centuries</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <Eye className="h-4 w-4 mt-1 text-teal-600 flex-shrink-0" />
-                      <span>Rich wildlife: puffins, guillemots, seals, dolphins</span>
-                    </li>
-                  </ul>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => openTourModal('erris')}
+                    className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 md:px-6 py-3 rounded-lg font-semibold transition-colors duration-300 text-sm md:text-base"
+                  >
+                    More Info
+                  </button>
+                  <a
+                    href="https://fareharbor.com/embeds/book/belcrossmarinetours/items/645293/?full-items=yes&flow=1427653"
+                    className="flex-1 bg-teal-600 hover:bg-teal-700 text-white px-4 md:px-6 py-3 rounded-lg font-semibold transition-colors duration-300 text-sm md:text-base text-center"
+                  >
+                    Book Now
+                  </a>
                 </div>
-                <button
-                  onClick={() => openTourModal('erris')}
-                  className="w-full bg-teal-600 hover:bg-teal-700 text-white px-4 md:px-6 py-3 rounded-lg font-semibold transition-colors duration-300 text-sm md:text-base"
-                >
-                  Book This Tour
-                </button>
               </div>
             </div>
           </div>
@@ -399,12 +404,12 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection }
           </div>
           
           <div className="mt-12">
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="bg-teal-600 hover:bg-teal-700 text-white px-12 py-4 rounded-lg text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+            <a
+              href="https://fareharbor.com/embeds/book/belcrossmarinetours/?full-items=yes&flow=1427653"
+              className="bg-teal-600 hover:bg-teal-700 text-white px-12 py-4 rounded-lg text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg inline-block"
             >
-              Contact Us
-            </button>
+              Book Online Now
+            </a>
           </div>
         </div>
       </section>
@@ -521,106 +526,113 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection }
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h3 className="text-2xl font-bold mb-8">Get In Touch</h3>
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <Phone className="h-6 w-6 text-teal-400 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Phone</h4>
-                    <p className="text-gray-300">0858230869</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <Globe className="h-6 w-6 text-teal-400 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Website</h4>
-                    <p className="text-gray-300">www.Belmulletmarinetours.com</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <MapPin className="h-6 w-6 text-teal-400 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Location</h4>
-                    <p className="text-gray-300">
-                      Belcross Enterprises Ltd<br />
-                      Emlybeg South, Binghamstown<br />
-                      Belmullet, Co. Mayo, Ireland
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <Anchor className="h-6 w-6 text-teal-400 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Departure Point</h4>
-                    <p className="text-gray-300">Ballyglass Pier, Belmullet</p>
-                  </div>
-                </div>
+          {/* Contact Information Grid - 2x2 Layout */}
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-4xl mx-auto">
+            {/* Phone */}
+            <div className="bg-gray-800 rounded-2xl p-6 text-center hover:bg-gray-750 transition-colors duration-300">
+              <div className="bg-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Phone className="h-8 w-8 text-white" />
               </div>
+              <h4 className="text-xl font-semibold mb-2">Phone</h4>
+              <p className="text-gray-300 text-lg">0858230869</p>
             </div>
 
-            <div className="bg-gray-800 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold mb-6">Contact Form</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Name</label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent text-white"
-                    placeholder="Your full name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Email</label>
-                  <input
-                    type="email"
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent text-white"
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Phone</label>
-                  <input
-                    type="tel"
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent text-white"
-                    placeholder="Your phone number"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Subject</label>
-                  <select className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent text-white">
-                    <option>General Inquiry</option>
-                    <option>Tour Booking</option>
-                    <option>Group Booking</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Message</label>
-                  <textarea
-                    rows={4}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent text-white"
-                    placeholder="Tell us how we can help you..."
-                  ></textarea>
-                </div>
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300">
-                  Send Message
-                </button>
+            {/* Website */}
+            <div className="bg-gray-800 rounded-2xl p-6 text-center hover:bg-gray-750 transition-colors duration-300">
+              <div className="bg-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Globe className="h-8 w-8 text-white" />
               </div>
+              <h4 className="text-xl font-semibold mb-2">Website</h4>
+              <p className="text-gray-300 text-lg">www.Belmulletmarinetours.com</p>
+            </div>
+
+            {/* Location */}
+            <div className="bg-gray-800 rounded-2xl p-6 text-center hover:bg-gray-750 transition-colors duration-300">
+              <div className="bg-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <MapPin className="h-8 w-8 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">Location</h4>
+              <p className="text-gray-300">
+                Belcross Enterprises Ltd<br />
+                Emlybeg South, Binghamstown<br />
+                Belmullet, Co. Mayo, Ireland
+              </p>
+            </div>
+
+            {/* Departure Point */}
+            <div className="bg-gray-800 rounded-2xl p-6 text-center hover:bg-gray-750 transition-colors duration-300">
+              <div className="bg-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Anchor className="h-8 w-8 text-white" />
+              </div>
+              <h4 className="text-xl font-semibold mb-2">Departure Point</h4>
+              <p className="text-gray-300 text-lg">Ballyglass Pier, Belmullet</p>
             </div>
           </div>
+          {/* potential email form that can be set up in future if needed */}
+          {/* <div className="bg-gray-800 rounded-2xl p-8 mt-12">
+            <h3 className="text-2xl font-bold mb-6">Contact Form</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Name</label>
+                <input
+                  type="text"
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent text-white"
+                  placeholder="Your full name"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Email</label>
+                <input
+                  type="email"
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent text-white"
+                  placeholder="your.email@example.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Phone</label>
+                <input
+                  type="tel"
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent text-white"
+                  placeholder="Your phone number"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Subject</label>
+                <select className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent text-white">
+                  <option>General Inquiry</option>
+                  <option>Tour Booking</option>
+                  <option>Group Booking</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Message</label>
+                <textarea
+                  rows={4}
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent text-white"
+                  placeholder="Tell us how we can help you..."
+                ></textarea>
+              </div>
+              <button className="w-full bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300">
+                Send Message
+              </button>
+            </div>
+          </div> */}
         </div>
       </section>
 
       {/* Footer */}
       <footer className="bg-black text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <Anchor className="h-8 w-8 text-teal-400" />
-              <span className="text-2xl font-bold">Belcross Marine Tours</span>
-            </div>
+                  <div className="text-center">
+          <div className="flex items-center justify-center space-x-2 mb-4">
+            <img 
+              src="/static/images/BM_logo_transparent_dark.svg" 
+              alt="Belcross Marine Tours Logo" 
+              className="h-8 w-8"
+            />
+            <span className="text-2xl font-bold">Belcross Marine Tours</span>
+          </div>
             <p className="text-gray-400 mb-4">
               Local knowledge, professional service, and a passion for the Atlantic
             </p>
@@ -631,11 +643,11 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection }
         </div>
       </footer>
 
-      {/* Tour Modal */}
-      <TourModal
+      {/* Tour Info Modal */}
+      <TourInfoModal
         tour={selectedTour}
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
       />
     </div>
   );

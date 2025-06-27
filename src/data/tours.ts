@@ -1,13 +1,13 @@
 export const stagsImages = [
-  'https://images.pexels.com/photos/1266808/pexels-photo-1266808.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
-  'https://images.pexels.com/photos/1001682/pexels-photo-1001682.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
-  'https://images.pexels.com/photos/1430677/pexels-photo-1430677.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop'
+  '/static/images/optimized_broadhavenbaycoast-51.png',
+  '/static/images/optimized_broadhavenbaycoast-6.png',
+  '/static/images/optimized_broadhavenbaycoast-1.png'
 ];
 
 export const errisImages = [
-  'https://images.pexels.com/photos/1001682/pexels-photo-1001682.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
-  'https://images.pexels.com/photos/1266808/pexels-photo-1266808.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
-  'https://images.pexels.com/photos/1430677/pexels-photo-1430677.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop'
+  '/static/images/optimized_erriscoastline-8.png',
+  '/static/images/optimized_erriscoastline-4.png',
+  '/static/images/optimized_broadhavenbaycoast-64.png'
 ];
 
 export const tours = {
