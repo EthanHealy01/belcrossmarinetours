@@ -160,21 +160,21 @@ const TourInfoModal: React.FC<TourInfoModalProps> = ({ tour, isOpen, onClose }) 
             <h3 className="text-xl font-bold text-gray-900 mb-4">Pricing</h3>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center sm:gap-2">
                   <div className="text-2xl font-bold text-blue-700">€60</div>
                   <div className="text-xs text-gray-400">+ booking fee</div>
                 </div>
                 <div className="text-sm text-gray-600">Adult</div>
               </div>
               <div>
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center sm:gap-2">
                   <div className="text-2xl font-bold text-blue-700">€40</div>
                   <div className="text-xs text-gray-400">+ booking fee</div>
                 </div>
                 <div className="text-sm text-gray-600">Child (Under 16)</div>
               </div>
               <div>
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center sm:gap-2">
                   <div className="text-2xl font-bold text-blue-700">€50</div>
                   <div className="text-xs text-gray-400">+ booking fee</div>
                 </div>

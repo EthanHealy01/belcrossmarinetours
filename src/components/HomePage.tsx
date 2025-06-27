@@ -380,7 +380,8 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection, 
             <div className="bg-white rounded-2xl p-8 shadow-xl transform hover:scale-105 transition-all duration-300">
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Adult</h3>
-                <div className="text-5xl font-bold text-blue-700 mb-4">€60</div>
+                <div className="text-5xl font-bold text-blue-700 mb-2">€60</div>
+                <div className="text-gray-400 text-sm mb-2">+ booking fee</div>
                 <p className="text-gray-600">Per person</p>
               </div>
             </div>
@@ -389,6 +390,7 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection, 
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Child</h3>
                 <div className="text-5xl font-bold text-blue-700 mb-2">€40</div>
+                <div className="text-gray-400 text-sm mb-2">+ booking fee</div>
                 <p className="text-gray-600 mb-2">Under 16</p>
                 <div className="text-green-600 font-semibold">Save €20</div>
               </div>
@@ -397,7 +399,8 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveSection, scrollToSection, 
             <div className="bg-white rounded-2xl p-8 shadow-xl transform hover:scale-105 transition-all duration-300">
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Student</h3>
-                <div className="text-5xl font-bold text-blue-700 mb-4">€50</div>
+                <div className="text-5xl font-bold text-blue-700 mb-2">€50</div>
+                <div className="text-gray-400 text-sm mb-2">+ booking fee</div>
                 <p className="text-gray-600">With valid ID</p>
               </div>
             </div>
